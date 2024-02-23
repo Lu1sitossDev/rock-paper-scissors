@@ -1,9 +1,25 @@
-let finalPlayerChoice;
+//let finalPlayerChoice;
 let finalComputerChoice;
 let playerPoints = 0;
 let computerPoints = 0;
 let playerStr;
 let computerStr;
+let defaultString = "computer: "+" |" + " player: ";
+
+const container = document.querySelector(".container");
+const paraGame = document.querySelector("#game");
+const paraResult = document.querySelector("#result");
+const paraPoints = document.querySelector("#points");
+
+paraGame.textContent = defaultString;
+paraPoints.textContent = "Computer Points: " + computerPoints.toString() +" | " + "Player Points: "+ playerPoints.toString();
+
+const menu = document.querySelector(".menu");
+    menu.addEventListener("click", (event) => {
+        let target = event.target.id;
+        getPlayerChoice(target)
+    });
+
 
 function getComputerChoice(){
     function getRandomInt(max) {
@@ -16,11 +32,9 @@ function getComputerChoice(){
         
 }
 
-function getPlayerChoice(){
-    playerChoice = prompt("choose between: 'rock, paper or scissors'");
-    playerChoiceLower = playerChoice.toLowerCase();
-    return getPlayerIndex(playerChoiceLower);
-
+function getPlayerChoice(choice){
+    let finalPlayerChoice = getPlayerIndex(choice);
+    return finalPlayerChoice;
 }
 
 function getComputerstring(computer){
@@ -60,40 +74,57 @@ function getPlayerIndex(playerChoice){
 }
 
 function playRound(player,computer){
-    
-    console.log("computer: " + computerStr +" |" + " player: " + playerStr);
-    
-    if(player == computer){
-        console.log("it's a tie")   
-    }else if(player == 0 && computer == 1){
-        console.log("computer won!")
-        computerPoints++;
-    }else if(computer == 0 && player == 1){
-        console.log("player won!")
-        playerPoints++;
-    }else if(computer == 1 && player == 2){
-        console.log("player won!")
-        playerPoints++;
-    }else if(computer == 2 && player == 1){
-        console.log("computer won!")
-        computerPoints++;
-    }else if(computer == 2 && player == 0){
-        console.log("player won!")
-        playerPoints++;
-    }else if(computer == 0 && player == 2){
-        console.log("computer won!")
-        computerPoints++;
-    }
+    if(playerStr !== undefined){
+        paraGame.textContent = "computer: " + computerStr +" |" + " player: " + playerStr;
+        
+        if(player == computer){
+            paraResult.textContent = "it's a tie";
+        }else if(player == 0 && computer == 1){
+            paraResult.textContent = "computer won!";
+            computerPoints++;
+        }else if(computer == 0 && player == 1){
+            paraResult.textContent = "player won!";
+            playerPoints++;
+        }else if(computer == 1 && player == 2){
+            paraResult.textContent = "player won!";
+            playerPoints++;
+        }else if(computer == 2 && player == 1){
+            paraResult.textContent = "computer won!";
+            computerPoints++;
+        }else if(computer == 2 && player == 0){
+            paraResult.textContent = "player won!";
+            playerPoints++;
+        }else if(computer == 0 && player == 2){
+            paraResult.textContent = "computer won!";
+            computerPoints++;
+        }
 
-    console.log("Computer Points: " + computerPoints.toString() +" | " + "Player Points: "+ playerPoints.toString());
-    console.log("---------------")
+        if(playerPoints == 5){
+            alert("Player won the game!");
+            playerPoints = 0;
+            computerPoints = 0;
+            paraGame.textContent = "computer: "+" |" + " player: ";
+            paraResult.textContent = "";
+        } 
+        if(computerPoints == 5){
+            alert("Computer won the game!");
+            playerPoints = 0;
+            computerPoints = 0;
+            paraGame.textContent = "computer: "+" |" + " player: ";
+            paraResult.textContent = "";
+        } 
+
+        paraPoints.textContent = "Computer Points: " + computerPoints.toString() +" | " + "Player Points: "+ playerPoints.toString();
+    }
     
 }
 
-function playGame(times){
-    for(let i = 0; i < times; i++){
-        playRound(getPlayerChoice(),getComputerChoice());
-    }
+function playGame(){
+    playRound(getPlayerChoice(),getComputerChoice()); 
+    
 }
 
-playGame(5);
+menu.addEventListener("click", () => {
+    playGame();
+    
+})
